@@ -10,7 +10,7 @@ public class EditableBufferedReader extends BufferedReader{
 	public final int INS = 279150126;
 	public final int CtrlD = 4;
 	int[] sca = {LEFT, RIGHT, BKSPC, SUP, INS, CtrlD};
-	public static ArrayList<String> text = new ArrayList<>();
+	protected Line line;
 	protected int pos=0;
 	
 	public EditableBufferedReader(InputStreamReader in) {
@@ -21,6 +21,7 @@ public class EditableBufferedReader extends BufferedReader{
 	@Override
 	public String readLine() {
 		setRaw();
+		line = new Line();
 		int c=0;
 		while (c!=CtrlD) {
 			try {
@@ -33,18 +34,18 @@ public class EditableBufferedReader extends BufferedReader{
 						}
 						break;
 					case RIGHT:
-						if(pos<text.size()) {
+						if(pos<line.getSize()) {
 							pos++;
 						}
 						break;
 					case BKSPC:
-						esborra(pos);
+						line.backSpace(pos);
 						pos--;
 						break;
 					case INS:
 						break;
 					case SUP:
-						suprimeix(pos);
+						line.supr(pos);
 						pos--;
 						break;
 					case CtrlD:
@@ -53,9 +54,9 @@ public class EditableBufferedReader extends BufferedReader{
 					}
 				} else {
 					char b = (char) c;
-					text.add(pos, String.valueOf(b));
+					line.add(pos, b);
 					pos++;
-					System.out.print(b);
+					System.out.print(c);
 				}
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -63,7 +64,7 @@ public class EditableBufferedReader extends BufferedReader{
 			
 		}
 		unsetRaw();
-		return text.toString();
+		return line.toString();
 	}
 	
 	public void setRaw() {
@@ -83,16 +84,7 @@ public class EditableBufferedReader extends BufferedReader{
 		}
 	}
 	
-	public static void esborra(int pos) {
-		if (pos!=0) {
-			text.remove(pos-1);
-		}
-	}
-	public static void suprimeix(int pos) {
-		if (pos!=0) {
-			text.remove(pos);
-		}
-	}
+	
 	public void actualitzaVista() {
 		
 	}

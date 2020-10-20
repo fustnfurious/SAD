@@ -32,7 +32,7 @@ public class EditableBufferedReader extends BufferedReader{
 		super(in);
 	}
 	
-	public int tradueix() {
+	public int tradueix() throws IOException{
 		int c = read();
 		switch (c) {
 		case CtrlD: return _CtrlD;
@@ -74,6 +74,7 @@ public class EditableBufferedReader extends BufferedReader{
 						line.backSpace();
 						break;
 					case _INS:
+						line.switchMode();
 						break;
 					case _SUP:
 						line.supr();
@@ -91,7 +92,6 @@ public class EditableBufferedReader extends BufferedReader{
 				} else {
 					char b = (char) c;
 					line.add(b);
-					System.out.print(c);
 				}
 			} catch (IOException e) {
 				e.printStackTrace();

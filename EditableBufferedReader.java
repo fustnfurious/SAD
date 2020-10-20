@@ -77,7 +77,7 @@ public class EditableBufferedReader extends BufferedReader{
 						line.switchMode();
 						break;
 					case _SUP:
-						line.supr();
+						//line.del();
 						break;
 					case _HOME:
 						line.home();

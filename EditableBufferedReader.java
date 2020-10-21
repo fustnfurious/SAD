@@ -37,14 +37,19 @@ public class EditableBufferedReader extends BufferedReader{
 		switch (c) {
 		case CtrlD: return _CtrlD;
 		case BKSPC: return _BKSPC;
+		case ENTER: return _ENTER;
 		case ESC: 
 			c=read();
 			c=read();
 			switch(c) {
 			case LEFT: return _LEFT;
 			case RIGHT: return _RIGHT;
-			case SUP: return _SUP;
-			case INS: return _INS;
+			case SUP: 
+				read();
+				return _SUP;
+			case INS:
+				read();
+				return _INS;
 			case HOME: return _HOME;
 			case END: return _END;
 			default: return _ERR;
@@ -77,7 +82,7 @@ public class EditableBufferedReader extends BufferedReader{
 						line.switchMode();
 						break;
 					case _SUP:
-						//line.del();
+						line.sup();
 						break;
 					case _HOME:
 						line.home();
@@ -121,7 +126,7 @@ public class EditableBufferedReader extends BufferedReader{
 	
 	public Boolean isSpecialCharacter(int c) {
 		for(int i=0; i<sca.length; i++) {
-			if(c==i) {
+			if(c==sca[i]) {
 				return true;
 			}
 		}

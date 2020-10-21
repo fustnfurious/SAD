@@ -16,16 +16,16 @@ public class Line {
 	
 	public void arrowLeft() {
 		if (pos!=0) {
-			pos--;
 			view.left();
+			pos--;
 		}
 		
 	}
 	
 	public void arrowRight() {
-		if (pos<this.line.size()-1) {
-			pos++;
+		if (pos<this.line.size()) {
 			view.right();
+			pos++;
 		}
 	}
 	public void backSpace() {
@@ -48,29 +48,32 @@ public class Line {
 	}
 	
 	public void end() {
-		pos= line.size()-1;
+		pos= line.size();
 		view.end(pos);
 	}
 	
 	public void switchMode() {
 		insMode=!insMode;
 	}
-	/*public void del() {
-		if(this.pos<line.size()-1) {
+	public void sup() {
+		/*if(this.pos<line.size()-1) {
 		line.remove(this.pos);
 		List<Character> rest = line.subList(pos, line.size()-1);
 		view.write(rest);
-		}
-	}*/
+		}*/
+	}
 	
 	public void add(char c) {
-		if(!insMode) {
-			line.set(this.pos, c);
+		if(insMode) {
+			if (pos==line.size()) {
+				line.add(c);
+				view.write(c);
+			} else {
+				
+			}
 		} else {
-		line.add(this.pos, c);
+			
 		}
-		pos++;
-		view.write(c);
 	}
 	
 	public int getSize() {

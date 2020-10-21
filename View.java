@@ -18,10 +18,10 @@ public class View {
 		
 	}
 	public void home() {
-		System.out.print("\u001B[0;0H");
+		System.out.print("\u001B[;0H");
 	}
 	public void end(int fin) {
-		System.out.print("\u001B[0;"+fin+"H");
+		System.out.print("\u001B[;"+fin+"H");
 	}
 	public void write(char c) {
 		System.out.print(c);

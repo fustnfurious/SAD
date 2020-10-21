@@ -70,7 +70,7 @@ public class EditableBufferedReader extends BufferedReader{
 				if (isSpecialCharacter(c)) {
 					switch (c) {
 					case _LEFT:
-						line.arrowRight();
+						line.arrowLeft();
 						break;
 					case _RIGHT:
 						line.arrowRight();

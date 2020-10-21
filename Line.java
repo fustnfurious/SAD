@@ -5,13 +5,13 @@ public class Line {
 	protected ArrayList<Character> line;
 	protected View view;
 	int pos;
-	boolean insMode;
+	boolean overrideMode;
 	
 	public Line() {
 		line = new ArrayList<Character>();
 		view = new View();
 		int pos = 0;
-		insMode = true;
+		overrideMode = true;
 	}
 	
 	public void arrowLeft() {
@@ -53,7 +53,7 @@ public class Line {
 	}
 	
 	public void switchMode() {
-		insMode=!insMode;
+		overrideMode=!overrideMode;
 	}
 	public void sup() {
 		/*if(this.pos<line.size()-1) {
@@ -64,12 +64,15 @@ public class Line {
 	}
 	
 	public void add(char c) {
-		if(insMode) {
+		if(overrideMode) {
 			if (pos==line.size()) {
 				line.add(c);
+				pos++;
 				view.write(c);
 			} else {
-				
+				line.set(pos, c);
+				pos++;
+				view.write(c);
 			}
 		} else {
 			

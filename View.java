@@ -17,11 +17,11 @@ public class View {
 		left();
 		
 	}
-	public void home() {
-		System.out.print("\u001B[;0H");
+	public void home(int pos) {
+		System.out.print("\u001B["+pos+"D");
 	}
 	public void end(int fin) {
-		System.out.print("\u001B[;"+fin+"H");
+		System.out.print("\u001B["+fin+"C");
 	}
 	public void write(char c) {
 		System.out.print(c);

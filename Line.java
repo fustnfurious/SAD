@@ -30,26 +30,36 @@ public class Line {
 	}
 	public void backSpace() {
 		if (this.pos!=0) {
-			line.remove(this.pos-1);
-			pos--;
-			view.left();
-			List<Character> rest = line.subList(pos, line.size()-1);
-			for(int i=0; i<rest.size();i++) {
-				view.write(rest.get(i));
+			if(this.pos!=line.size()) { //si no esborra des del final
+				line.remove(this.pos-1);
+				pos--;
+				view.left();
+				for(int i=pos; i<line.size();i++) { // imprimim la resta de la linia
+					view.write(line.get(i));
+				}
+				view.write((char)32);
+				view.home(line.size()-pos +1);
+			} else { 					// si esborra des del final
+				line.remove(this.pos-1);
+				pos--;
+				view.left();
+				view.write((char)32);
+				view.left();
 			}
+			
 			
 		}
 		
 	}
 	
 	public void home() {
+		view.home(pos);
 		pos=0;
-		view.home();
 	}
 	
 	public void end() {
-		pos= line.size();
-		view.end(pos);
+		view.end(line.size()-pos);
+		pos=line.size();
 	}
 	
 	public void switchMode() {

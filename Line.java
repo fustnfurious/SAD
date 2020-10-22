@@ -64,11 +64,14 @@ public class Line {
 		overrideMode=!overrideMode;
 	}
 	public void sup() {
-		/*if(this.pos<line.size()-1) {
-		line.remove(this.pos);
-		List<Character> rest = line.subList(pos, line.size()-1);
-		view.write(rest);
-		}*/
+		if (this.pos!=line.size()) {
+				line.remove(this.pos);
+				for(int i=pos; i<line.size();i++) { // imprimim la resta de la linia
+					view.write(line.get(i));
+				}
+				view.write((char)32); //espai
+				view.home(line.size()-pos+1);
+		}
 	}
 	
 	public void add(char c) {

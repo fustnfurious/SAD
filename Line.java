@@ -11,7 +11,7 @@ public class Line {
 		line = new ArrayList<Character>();
 		view = new View();
 		int pos = 0;
-		overrideMode = true;
+		overrideMode = false;
 	}
 	
 	public void arrowLeft() {
@@ -37,17 +37,15 @@ public class Line {
 				for(int i=pos; i<line.size();i++) { // imprimim la resta de la linia
 					view.write(line.get(i));
 				}
-				view.write((char)32);
+				view.write((char)32); //espai
 				view.home(line.size()-pos +1);
 			} else { 					// si esborra des del final
 				line.remove(this.pos-1);
 				pos--;
 				view.left();
-				view.write((char)32);
+				view.write((char)32); //espai
 				view.left();
 			}
-			
-			
 		}
 		
 	}
@@ -85,7 +83,20 @@ public class Line {
 				view.write(c);
 			}
 		} else {
-			
+			if (pos==line.size()) {
+				line.add(c);
+				pos++;
+				view.write(c);
+			} else {
+				line.add(pos,c);
+				for(int i=pos; i<line.size();i++) { // imprimim la resta de la linia
+					view.write(line.get(i));
+				}
+				view.write((char)32); //espai
+				view.home(line.size()-pos);
+				pos++;
+				
+			}
 		}
 	}
 	

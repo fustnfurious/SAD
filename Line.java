@@ -15,7 +15,6 @@ public class Line extends Observable {
 	
 	public void arrowLeft() {
 		if (pos!=0) {
-			//view.left();
 			pos--;
 			setChanged();
 			notifyObservers(new Changes(true, Changes.LEFT, 1));
@@ -25,7 +24,6 @@ public class Line extends Observable {
 	
 	public void arrowRight() {
 		if (pos<this.line.size()) {
-			//view.right();
 			pos++;
 			setChanged();
 			notifyObservers(new Changes(true, Changes.RIGHT, 1));
@@ -40,19 +38,12 @@ public class Line extends Observable {
 					rest.add(line.get(i));
 				}
 				setChanged();
-				notifyObservers(new Changes(false, Changes.LEFT, 1, rest));
-				/*view.left();
-				for(int i=pos; i<line.size();i++) { // imprimim la resta de la linia
-					view.write(line.get(i));
-				}
-				view.write((char)32); //espai
-				view.home(line.size()-pos +1);*/
+				notifyObservers(new Changes(false, Changes.LEFT, Changes.BKSP, rest));
 		}
 		
 	}
 	
 	public void home() {
-		//view.home(pos);
 		int posInc = pos;
 		pos=0;
 		setChanged();
@@ -61,7 +52,6 @@ public class Line extends Observable {
 	}
 	
 	public void end() {
-		//view.end(line.size()-pos);
 		int posInc = line.size()-pos;
 		pos=line.size();
 		setChanged();
@@ -79,12 +69,7 @@ public class Line extends Observable {
 					rest.add(line.get(i));
 				}
 				setChanged();
-				notifyObservers(new Changes(false, Changes.LEFT, 0, rest));
-				/*for(int i=pos; i<line.size();i++) { // imprimim la resta de la linia
-					view.write(line.get(i));
-				}
-				view.write((char)32); //espai
-				view.home(line.size()-pos+1);*/
+				notifyObservers(new Changes(false, Changes.LEFT, Changes.SUP, rest));
 		}
 	}
 	
@@ -94,24 +79,16 @@ public class Line extends Observable {
 			pos++;
 			setChanged();
 			notifyObservers(new Changes(false, Changes.RIGHT, 0, c, null));
-			//view.write(c);
 			
 		} else {
-				line.add(pos,c);
-				pos++;
-				ArrayList<Character> rest = new ArrayList<>();;
-				for(int i=pos; i<line.size();i++) { 
-					rest.add(line.get(i));
-				}
-				setChanged();
-				notifyObservers(new Changes(false, Changes.RIGHT, 1, c, rest));
-				//view.write(c);
-				
-				/*for(int i=pos; i<line.size();i++) { // imprimim la resta de la linia
-					view.write(line.get(i));
-				}
-				view.write((char)32); //espai
-				view.home(line.size()-pos);*/
+			line.add(pos,c);
+			pos++;
+			ArrayList<Character> rest = new ArrayList<>();;
+			for(int i=pos; i<line.size();i++) { 
+				rest.add(line.get(i));
+			}
+			setChanged();
+			notifyObservers(new Changes(false, Changes.RIGHT, 1, c, rest));
 		}
 	}
 	

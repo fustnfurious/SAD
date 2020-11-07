@@ -1,6 +1,5 @@
-
 import java.io.*;
-import java.util.ArrayList;
+@SuppressWarnings("deprecation")
 public class EditableBufferedReader extends BufferedReader{
 	public final int LEFT = 68; //^[[D
 	public final int RIGHT = 67;//^[[C
@@ -27,9 +26,14 @@ public class EditableBufferedReader extends BufferedReader{
 	
 	int[] sca = {_LEFT, _RIGHT, _BKSPC, _SUP, _INS, _CtrlD, _HOME, _END, _ERR};
 	protected Line line;
+	protected Console console;
 	
 	public EditableBufferedReader(InputStreamReader in) {
 		super(in);
+		line = new Line();
+		console = new Console();
+		line.addObserver(console);
+		
 	}
 	
 	public int tradueix() throws IOException{
@@ -62,7 +66,6 @@ public class EditableBufferedReader extends BufferedReader{
 	@Override
 	public String readLine() {
 		setRaw();
-		line = new Line();
 		int c=0;
 		while (c!=_CtrlD) {
 			try {

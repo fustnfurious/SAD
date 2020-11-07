@@ -1,15 +1,14 @@
+import java.util.ArrayList;
 
 public class Changes {
 	
 	public static final boolean LEFT = false;
 	public static final boolean RIGHT = true;
-	public static final boolean ADD = true;
-	public static final boolean SUP = false;
 	public boolean onlyCursor;
 	public boolean right;
 	public int incPos;
-	public boolean add;
 	public char ch;
+	public ArrayList<Character> rest;
 	
 	
 	//nomes movem cursor
@@ -19,14 +18,21 @@ public class Changes {
 		this.incPos = incPos;
 	}
 
-
-	//afegim o treiem chars
-	public Changes(boolean onlyCursor, boolean right, int incPos, boolean add, char ch) {
+	//esborrem chars
+	public Changes(boolean onlyCursor, boolean right, int incPos, ArrayList<Character> rest) {
 		this.onlyCursor = onlyCursor;
 		this.right = right;
 		this.incPos = incPos;
-		this.add = add;
+		this.rest = rest;
+	}
+	
+	//afegim chars
+	public Changes(boolean onlyCursor, boolean right, int incPos, char ch, ArrayList<Character> rest) {
+		this.onlyCursor = onlyCursor;
+		this.right = right;
+		this.incPos = incPos;
 		this.ch = ch;
+		this.rest = rest;
 	}
 	
 }

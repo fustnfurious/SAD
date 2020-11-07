@@ -3,19 +3,7 @@ import java.util.Observer;
 
 @SuppressWarnings("deprecation")
 public class Console implements Observer{
-	public int cursor=0;
 	
-	public void ins() {
-		
-	}
-	public void sup() {
-		
-		
-	}
-	public void del() {
-		
-		
-	}
 	public void left(int pos) {
 		System.out.print("\u001B["+pos+"D");
 	}
@@ -29,7 +17,7 @@ public class Console implements Observer{
 	@Override
 	public void update(Observable o, Object arg) {
 		Changes c = (Changes) arg;
-		if (c.onlyCursor) {
+		if (c.onlyCursor) { // nomes movem cursor sense modificar linia
 			if(c.right) {
 				right(c.incPos);
 			} else {
@@ -37,6 +25,23 @@ public class Console implements Observer{
 			}
 		} else {
 			//marron
+			if (c.right) { // escriure 
+				if(c.incPos==0) { // override
+					write(c.ch);
+				} else { // no override
+					write(c.ch);
+					for (int i=0; i<c.rest.size();i++) {
+						write(c.rest.get(i));
+					}
+					left(c.rest.size());
+				}
+			} else {  //esborrar
+				if(c.incPos==0) { // suprimir
+					
+				} else { // backspace
+					
+				}
+			}
 		}
 		
 	}

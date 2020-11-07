@@ -5,7 +5,9 @@ import java.util.Observer;
 public class Console implements Observer{
 	
 	public void left(int pos) {
+		if(pos!=0) {
 		System.out.print("\u001B["+pos+"D");
+		}
 	}
 	public void right(int fin) {
 		System.out.print("\u001B["+fin+"C");
@@ -24,7 +26,6 @@ public class Console implements Observer{
 				left(c.incPos);
 			}
 		} else {
-			//marron
 			if (c.right) { // escriure 
 				if(c.incPos==0) { // override
 					write(c.ch);
@@ -35,12 +36,13 @@ public class Console implements Observer{
 					}
 					left(c.rest.size());
 				}
-			} else {  //esborrar
-				if(c.incPos==0) { // suprimir
-					
-				} else { // backspace
-					
-				}
+			} else {  //esborrar o suprimir
+					left(c.incPos); //veure Changes.SUP/BKSP
+					for (int i=0; i<c.rest.size();i++) {
+						write(c.rest.get(i));
+					}
+					write((char) 32);
+					left(c.rest.size()+1);
 			}
 		}
 		

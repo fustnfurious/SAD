@@ -4,6 +4,8 @@ public class Changes {
 	
 	public static final boolean LEFT = false;
 	public static final boolean RIGHT = true;
+	public static final int SUP = 0;
+	public static final int BKSP = 1;
 	public boolean onlyCursor;
 	public boolean right;
 	public int incPos;

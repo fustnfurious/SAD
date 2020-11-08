@@ -13,7 +13,7 @@ public class EditableBufferedReader extends BufferedReader{
 	public final int END = 70; //^[[F
 	public final int CtrlD = 4;
 	public final int ESC = 27;
-	public final int MOUSE = 0;
+	public final int MOUSE = 60;
 	
 	public final int _LEFT = -1;
 	public final int _RIGHT = -2;
@@ -48,11 +48,11 @@ public class EditableBufferedReader extends BufferedReader{
 		case CtrlD: return _CtrlD;
 		case BKSPC: return _BKSPC;
 		case ENTER: return _ENTER;
-		case MOUSE: return _MOUSE;
 		case ESC: 
 			c=read();
 			c=read();
 			switch(c) {
+			case MOUSE: return _MOUSE;
 			case LEFT: return _LEFT;
 			case RIGHT: return _RIGHT;
 			case UP: return _UP;
@@ -74,6 +74,7 @@ public class EditableBufferedReader extends BufferedReader{
 	
 	@Override
 	public String readLine() {
+		startMouse();
 		setRaw();
 		int c=0;
 		while (c!=_CtrlD) {
@@ -125,6 +126,7 @@ public class EditableBufferedReader extends BufferedReader{
 			
 		}
 		unsetRaw();
+		stopMouse();
 		return line.toString();
 	}
 	
@@ -143,6 +145,24 @@ public class EditableBufferedReader extends BufferedReader{
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public void startMouse(){
+        String[] cmd = {"/bin/sh", "echo -e \\e[?1000h \\e[?1006h"};
+        try {
+                Runtime.getRuntime().exec(cmd);
+        } catch (IOException e) {
+                e.printStackTrace();
+        }
+	}
+	
+	public void stopMouse() {
+		String[] cmd = {"/bin/sh", "echo -e \\e[?1000l"};
+        try {
+                Runtime.getRuntime().exec(cmd);
+        } catch (IOException e) {
+                e.printStackTrace();
+        }
 	}
 	
 	public Object getMousePos() {

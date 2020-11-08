@@ -66,13 +66,15 @@ public class Line extends Observable {
 		if(pos+cols<line.size()) {
 			pos+=cols;
 			setChanged();
-			notifyObservers(new Changes(Changes.OnlyCursor, Changes.UP, 1));
+			notifyObservers(new Changes(Changes.OnlyCursor, Changes.DOWN, 1));
 		} else {
-			if() {
-				
-			} else {
-				
-			}
+			int posIncLeft=pos+cols-line.size();
+			pos=line.size();
+			setChanged();
+			notifyObservers(new Changes(Changes.OnlyCursor, Changes.DOWN, 1));
+			setChanged();
+			notifyObservers(new Changes(Changes.OnlyCursor, Changes.LEFT, posIncLeft));
+			
 			
 		}
 		

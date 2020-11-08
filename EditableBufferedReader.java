@@ -37,7 +37,7 @@ public class EditableBufferedReader extends BufferedReader{
 	public EditableBufferedReader(InputStreamReader in) {
 		super(in);
 		line = new Line(getCols());
-		console = new Console();
+		console = new Console(getCols());
 		line.addObserver(console);
 		
 	}

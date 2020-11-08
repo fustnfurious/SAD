@@ -3,6 +3,8 @@ import java.io.*;
 public class EditableBufferedReader extends BufferedReader{
 	public final int LEFT = 68; //^[[D
 	public final int RIGHT = 67;//^[[C
+	public final int UP = 65; //^[[A
+	public final int DOWN = 66;//^[[B
 	public final int BKSPC = 127;
 	public final int SUP = 51; //^[[3~
 	public final int ENTER = 13;
@@ -11,6 +13,7 @@ public class EditableBufferedReader extends BufferedReader{
 	public final int END = 70; //^[[F
 	public final int CtrlD = 4;
 	public final int ESC = 27;
+	public final int MOUSE = 0;
 	
 	public final int _LEFT = -1;
 	public final int _RIGHT = -2;
@@ -22,15 +25,18 @@ public class EditableBufferedReader extends BufferedReader{
 	public final int _END = -8;
 	public final int _CtrlD = -9;
 	public final int _ERR=-10;
+	public final int _UP = -11;
+	public final int _DOWN=-12;
+	public final int _MOUSE=-13;
 	
 	
-	int[] sca = {_LEFT, _RIGHT, _BKSPC, _SUP, _INS, _CtrlD, _HOME, _END, _ERR};
+	int[] sca = {_LEFT, _RIGHT, _BKSPC, _SUP, _INS, _CtrlD, _HOME, _END, _ERR, _UP, _DOWN, _MOUSE};
 	protected Line line;
 	protected Console console;
 	
 	public EditableBufferedReader(InputStreamReader in) {
 		super(in);
-		line = new Line();
+		line = new Line(getCols());
 		console = new Console();
 		line.addObserver(console);
 		
@@ -42,12 +48,15 @@ public class EditableBufferedReader extends BufferedReader{
 		case CtrlD: return _CtrlD;
 		case BKSPC: return _BKSPC;
 		case ENTER: return _ENTER;
+		case MOUSE: return _MOUSE;
 		case ESC: 
 			c=read();
 			c=read();
 			switch(c) {
 			case LEFT: return _LEFT;
 			case RIGHT: return _RIGHT;
+			case UP: return _UP;
+			case DOWN: return _DOWN;
 			case SUP: 
 				read();
 				return _SUP;
@@ -72,11 +81,20 @@ public class EditableBufferedReader extends BufferedReader{
 				c=tradueix();
 				if (isSpecialCharacter(c)) {
 					switch (c) {
+					case _MOUSE:
+						line.setMouse(getMousePos());
+						break;
 					case _LEFT:
 						line.arrowLeft();
 						break;
 					case _RIGHT:
 						line.arrowRight();
+						break;
+					case _UP:
+						line.arrowUp();
+						break;
+					case _DOWN:
+						line.arrowDown();
 						break;
 					case _BKSPC:
 						line.backSpace();
@@ -125,6 +143,28 @@ public class EditableBufferedReader extends BufferedReader{
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public Object getMousePos() {
+		int c=2;
+		return new Object() {
+			public int posHor=c;
+			public int posVer=0;
+		};
+	}
+	
+	public int getCols() {
+		String cmd = "tput cols";
+		int cols=0;
+		try {
+			Process pr = Runtime.getRuntime().exec(cmd);
+			BufferedReader in = new BufferedReader(new InputStreamReader(pr.getInputStream()));
+			cols = Integer.parseInt(in.readLine());
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return cols;
 	}
 	
 	public Boolean isSpecialCharacter(int c) {

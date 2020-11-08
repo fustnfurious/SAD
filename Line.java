@@ -5,30 +5,79 @@ import java.util.Observable;
 public class Line extends Observable {
 	
 	protected ArrayList<Character> line;
-	int pos=0;
+	int pos;
+	int posVer;
+	int cols;
 	boolean overrideMode;
 	
-	public Line() {
+	public Line(int cols) {
 		line = new ArrayList<Character>();
 		overrideMode = false;
+		this.cols=cols;
+		pos=0;
+		posVer=0;
+	}
+	
+	public void setMouse(Object pos) {
+		
 	}
 	
 	public void arrowLeft() {
-		if (pos!=0) {
+		if(pos!=0) {
 			pos--;
-			setChanged();
-			notifyObservers(new Changes(true, Changes.LEFT, 1));
+			if((pos+1)%cols==0) {
+				setChanged();
+				notifyObservers(new Changes(Changes.OnlyCursor, Changes.UP, 1));
+				setChanged();
+				notifyObservers(new Changes(Changes.OnlyCursor, Changes.RIGHT, cols-1));
+			} else {
+				setChanged();
+				notifyObservers(new Changes(Changes.OnlyCursor, Changes.LEFT, 1));
+			}
+		}
+	}
+	
+	public void arrowRight() {
+		if(pos<line.size()) {
+			pos++;
+			if((pos)%cols==0) {
+				setChanged();
+				notifyObservers(new Changes(Changes.OnlyCursor, Changes.DOWN, 1));
+				setChanged();
+				notifyObservers(new Changes(Changes.OnlyCursor, Changes.LEFT, cols-1));
+			} else {
+				setChanged();
+				notifyObservers(new Changes(Changes.OnlyCursor, Changes.RIGHT, 1));
+			}
 		}
 		
 	}
 	
-	public void arrowRight() {
-		if (pos<this.line.size()) {
-			pos++;
+	public void arrowUp() {
+		if(pos-cols>=0) {
+			pos-=cols;
 			setChanged();
-			notifyObservers(new Changes(true, Changes.RIGHT, 1));
+			notifyObservers(new Changes(Changes.OnlyCursor, Changes.UP, 1));
 		}
+		
 	}
+	
+	public void arrowDown() {
+		if(pos+cols<line.size()) {
+			pos+=cols;
+			setChanged();
+			notifyObservers(new Changes(Changes.OnlyCursor, Changes.UP, 1));
+		} else {
+			if() {
+				
+			} else {
+				
+			}
+			
+		}
+		
+	}
+	
 	public void backSpace() {
 		if (this.pos!=0) {
 				line.remove(this.pos-1);
@@ -38,7 +87,7 @@ public class Line extends Observable {
 					rest.add(line.get(i));
 				}
 				setChanged();
-				notifyObservers(new Changes(false, Changes.LEFT, Changes.BKSP, rest));
+				notifyObservers(new Changes(Changes.NotOnlyCursor, Changes.DEL, Changes.BKSP, rest));
 		}
 		
 	}
@@ -47,7 +96,7 @@ public class Line extends Observable {
 		int posInc = pos;
 		pos=0;
 		setChanged();
-		notifyObservers(new Changes(true, Changes.LEFT, posInc));
+		notifyObservers(new Changes(Changes.OnlyCursor, Changes.LEFT, posInc));
 		
 	}
 	
@@ -55,7 +104,7 @@ public class Line extends Observable {
 		int posInc = line.size()-pos;
 		pos=line.size();
 		setChanged();
-		notifyObservers(new Changes(true, Changes.RIGHT, posInc));
+		notifyObservers(new Changes(Changes.OnlyCursor, Changes.RIGHT, posInc));
 	}
 	
 	public void switchMode() {
@@ -69,16 +118,20 @@ public class Line extends Observable {
 					rest.add(line.get(i));
 				}
 				setChanged();
-				notifyObservers(new Changes(false, Changes.LEFT, Changes.SUP, rest));
+				notifyObservers(new Changes(Changes.NotOnlyCursor, Changes.DEL, Changes.SUP, rest));
 		}
 	}
 	
 	public void add(char c) {
 		if(overrideMode) {
-			line.set(pos, c);
+			if(pos<line.size()) {
+				line.set(pos,c);
+			} else {
+				line.add(pos, c);
+			}
 			pos++;
 			setChanged();
-			notifyObservers(new Changes(false, Changes.RIGHT, 0, c, null));
+			notifyObservers(new Changes(Changes.NotOnlyCursor, Changes.ADD, Changes.Override, c, null));
 			
 		} else {
 			line.add(pos,c);
@@ -88,7 +141,7 @@ public class Line extends Observable {
 				rest.add(line.get(i));
 			}
 			setChanged();
-			notifyObservers(new Changes(false, Changes.RIGHT, 1, c, rest));
+			notifyObservers(new Changes(Changes.NotOnlyCursor, Changes.ADD, Changes.NotOverride, c, rest));
 		}
 	}
 	

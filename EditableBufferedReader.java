@@ -165,12 +165,29 @@ public class EditableBufferedReader extends BufferedReader{
         }
 	}
 	
-	public Object getMousePos() {
-		int c=2;
-		return new Object() {
-			public int posHor=c;
-			public int posVer=0;
-		};
+	public Object getMousePos() throws IOException{
+                int c=read();
+                c = read();
+                String vertical = "";
+                String horitzontal = "";
+                while(c != 59){
+                        vertical += c;
+                        c = read();
+                }
+                c = read();
+                System.out.println(vertical);
+                while(c != 77){
+                        horitzontal += c;
+                        c = read();
+                }
+                System.out.println(horitzontal);
+
+                return new Object() {
+                        public int posHor=0;
+                        public int posVer=0;
+                };
+
+
 	}
 	
 	public int getCols() {
